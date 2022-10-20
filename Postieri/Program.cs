@@ -40,7 +40,8 @@ builder.Services.AddCors(options =>
                       policy  =>
                       {
                           policy.WithOrigins("https://postieri.herokuapp.com",
-                                              "http://localhost:5173");
+                                              "http://localhost:5173").AllowAnyHeader()
+                                                  .AllowAnyMethod();
                       });
 });
 
