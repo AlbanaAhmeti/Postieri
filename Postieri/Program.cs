@@ -29,10 +29,20 @@ using AutoMapper;
 using Postieri.Mappings;
 using Postieri.Services.EmailService;
 
+var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
 string connString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 // Add services to the container.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy  =>
+                      {
+                          policy.WithOrigins("https://postieri.herokuapp.com",
+                                              "http://localhost:5173");
+                      });
+});
 
 
 
@@ -127,6 +137,7 @@ app.UseRouting();
 app.UseAuthentication();
 
 app.UseRouting();
+app.UseCors(MyAllowSpecificOrigins);
 app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
