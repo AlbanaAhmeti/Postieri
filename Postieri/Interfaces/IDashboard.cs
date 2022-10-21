@@ -8,5 +8,6 @@
         int OrdersAccepted();
         int OrdersAtTheCourier();
         int LastSevenDays();
+        int AvailableVehicles();
     }
 }

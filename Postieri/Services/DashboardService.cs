@@ -16,15 +16,10 @@ namespace Postieri.Services
         public double GetTotal()
         {
             var orders = _dbcontext.Orders
-                .Where(o=>o.Status =="transfer")
+                .Where(o => o.Status == "transfer")
                 .ToList();
-            double total = 0;
 
-            foreach (var order in orders)
-            {
-                total =+ order.Price;
-            }
-            return total;
+            return orders.Sum(o => o.Price);
         }
 
         public int AvailableCouriers()

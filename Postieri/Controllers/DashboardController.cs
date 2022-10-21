@@ -46,6 +46,15 @@ namespace Postieri.Controllers
         {
             return _dashboard.LastSevenDays();
         }
-
+        [HttpGet("AvailableCouriers")]
+        public int AvailableCouriers()
+        {
+            return _dashboard.AvailableCouriers();
+        }
+        [HttpGet("AvailableVehicles")]
+        public int AvailableVehicles()
+        {
+            return _dashboard.AvailableVehicles();
+        }
     }
 }

@@ -13,5 +13,6 @@ namespace Postieri.Interfaces
         void setStatus(Guid orderId, string status, Guid courier);
         void assignCourierToOrder(Guid orderId, Guid courierId);
         string CalculateSize(double length, double width, double height);
+        List<Order> GetOrdersByRole();
     }
 }

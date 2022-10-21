@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-
 using Microsoft.EntityFrameworkCore;
 using Postieri.Data;
 using Postieri.DTO;
 using Postieri.Models;
 using System.Linq;
+using System.Security.Claims;
+
 
 namespace Postieri.Services
 {
@@ -14,9 +15,11 @@ namespace Postieri.Services
         private readonly DataContext _context;
 
         private readonly IMapper _mapper;
-        public OrderService(DataContext context, IMapper mapper)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public OrderService(DataContext context, IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
 
         }
@@ -234,6 +237,49 @@ namespace Postieri.Services
             }
             return ("we do not ship this kind of package, please contact our staff for further details");
         }
+        private string GetMyName()
+        {
+            var result = string.Empty;
+            if (_httpContextAccessor.HttpContext != null)
+            {
+                result = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
+            }
+            return result;
+        }
+
+        private string GetRole()
+        {
+            var role = string.Empty;
+            if (_httpContextAccessor.HttpContext != null)
+            {
+                role = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Role);
+            }
+            return role;
+        }
+
+        public List<Order> GetOrdersByRole()
+        {
+            var result = GetMyName();
+            var role = GetRole();
+
+            if (role == "Courier")
+            {
+                var courier = _context.Users.Where(x => x.Email == result).FirstOrDefault();
+                var orders = _context.Orders.Where(x => x.CourierId == courier.UserId).Include(x => x.Products).ToList();
+                return orders;
+            }
+            else if (role == "Manager" || role == "Administrator")
+            {
+                return _context.Orders.Include(x => x.Products).ToList();
+            }
+            else if (role == "Storekeeper")
+            {
+                return _context.Orders.Where(x => x.Status == "accept").Include(x => x.Products).ToList();
+            }
+            var user = _context.Users.Where(x => x.Email == result).FirstOrDefault();
+            return _context.Orders.Where(x => x.UserId == user.UserId).Include(x => x.Products).ToList();
+        }
+
     }
 }
 
