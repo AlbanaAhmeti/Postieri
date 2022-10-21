@@ -98,6 +98,7 @@ builder.Services.AddScoped<IRolesService, RolesService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
 builder.Services.AddScoped<IDeliveryPriceService, DeliveryPriceService>();
 builder.Services.AddScoped<IBusinessIntegrationService, BusinessIntegrationService>();
+builder.Services.AddScoped<IDashboard, DashboardService>();
 builder.Services.AddAutoMapper(typeof(OrderMapper).Assembly);
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<ICourierService, CourierService>();
