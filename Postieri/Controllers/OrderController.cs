@@ -64,7 +64,7 @@ namespace Postieri.Controllers
             return _orderService.CalculateSize(length, width, height);
 
         }
-        [HttpGet("getordersbyrole"), Authorize]
+        [HttpGet("getordersbyrole")]
         public ActionResult<List<Order>> GetOrders()
         {
             return Ok(_orderService.GetOrdersByRole());

@@ -67,5 +67,17 @@ namespace Postieri.Services
 
             return jwt;
         }
+        public List<Business> GetBusinesses()
+        {
+            return _context.Businesses.ToList();
+        }
+        public List<Business> GetBusinessesByEmail(string email)
+        {
+            return _context.Businesses.Where(x => x.Email.ToLower().Equals(email.ToLower())).ToList();
+        }
+        public List<Business> GetBusinessByToken(string token)
+        {
+            return _context.Businesses.Where(x => x.BusinessToken.Equals(token)).ToList();
+        }
     }
 }

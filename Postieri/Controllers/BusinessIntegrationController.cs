@@ -34,5 +34,20 @@ namespace Postieri.Controllers
             _businessIntegration.SaveBusiness(request);
             return Ok();
         }
+        [HttpGet("GetAllBusinesses")]
+        public ActionResult<List<Business>> GetBusinesses()
+        {
+            return Ok(_businessIntegration.GetBusinesses());
+        }
+        [HttpGet("GetBusinessesByEmail")]
+        public ActionResult<List<Business>> GetBusinessesByEmail(string email)
+        {
+            return Ok(_businessIntegration.GetBusinessesByEmail(email));
+        }
+        [HttpGet("GetBusinessesByToken")]
+        public ActionResult<List<Business>> GetBusinessByToken(string token)
+        {
+            return Ok(_businessIntegration.GetBusinessByToken(token));
+        }
     }
 }
